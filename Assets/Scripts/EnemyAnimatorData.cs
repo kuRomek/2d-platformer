@@ -4,6 +4,6 @@ public static class EnemyAnimatorData
 {
     public static class Params
     {
-        public static int AnimState = StringToHash(nameof(AnimState));
+        public static readonly int AnimState = StringToHash(nameof(AnimState));
     }
 }

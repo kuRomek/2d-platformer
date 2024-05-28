@@ -4,9 +4,9 @@ public static class PlayerAnimatorData
 {
     public static class Params
     {
-        public static int AnimState = StringToHash(nameof(AnimState));
-        public static int AirSpeedY = StringToHash(nameof(AirSpeedY));
-        public static int Grounded = StringToHash(nameof(Grounded));
-        public static int Jump = StringToHash(nameof(Jump));
+        public static readonly int AnimState = StringToHash(nameof(AnimState));
+        public static readonly int AirSpeedY = StringToHash(nameof(AirSpeedY));
+        public static readonly int Grounded = StringToHash(nameof(Grounded));
+        public static readonly int Jump = StringToHash(nameof(Jump));
     }
 }

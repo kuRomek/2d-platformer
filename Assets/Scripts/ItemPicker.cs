@@ -12,8 +12,7 @@ public class ItemPicker : MonoBehaviour
 
     private void Collect(Collectable item)
     {
-        _audioSource.clip = item.PickUpSound;
+        _audioSource.PlayOneShot(item.PickUpSound);
         Destroy(item.gameObject);
-        _audioSource.Play();
     }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public class EnemyMovement : MonoBehaviour
 {
     [SerializeField] private float _speed;
     [SerializeField] private Checkpoint[] _checkpoints;
@@ -16,7 +16,7 @@ public class EnemyController : MonoBehaviour
             _animator.SetInteger(EnemyAnimatorData.Params.AnimState, walkingState);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (_checkpoints.Length > 0)
             Move();

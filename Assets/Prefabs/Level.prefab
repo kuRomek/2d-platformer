@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6139352721418477654}
   m_Layer: 0
-  m_Name: Items
+  m_Name: CollectableItems
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3891,7 +3891,7 @@ CompositeCollider2D:
   m_GameObject: {fileID: 2149854342691651204}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: 356f9d96a4ad4aa449baa85821580090, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -4778,7 +4778,7 @@ Transform:
   - {fileID: 2696919602341957780}
   - {fileID: 6811570567936764675}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!156049354 &9043964196841586813
 Grid:
