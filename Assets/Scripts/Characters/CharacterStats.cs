@@ -5,7 +5,6 @@ public class CharacterStats : MonoBehaviour
     [SerializeField, Min(1f)] private float _maxHealthPoints;
     [SerializeField] private float _speed;
     [SerializeField] private float _jumpForce;
-
     private float _healthPoints;
 
     public float MaxHealthPoints => _maxHealthPoints;

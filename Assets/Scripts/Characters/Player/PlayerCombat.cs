@@ -6,7 +6,6 @@ public class PlayerCombat : Attackable
 {
     [SerializeField] private AudioClip[] _swingSounds;
     [SerializeField] private CircleCollider2D _attackField;
-
     private PlayerInfo _player;
     private List<Collider2D> _attackedEnemies = new List<Collider2D>();
     private ContactFilter2D _enemyFilter = new ContactFilter2D();
@@ -34,6 +33,17 @@ public class PlayerCombat : Attackable
         {
             _attacking = StartCoroutine(Attack(PlayerStats.AttackType.Heavy));
             _player.Input.ResetHeavyAttack();
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.TryGetComponent(out EnemyInfo enemy) && IsDead == false && enemy.Combat.IsDead == false)
+        {
+            float force = 350f;
+
+            TakeDamageForce(force * (collision.GetContact(0).point - (Vector2)collision.transform.position));
+            TakeDamage(enemy.Stats.TickDamage);
         }
     }
 
@@ -80,7 +90,7 @@ public class PlayerCombat : Attackable
             base.TakeDamageForce(force);
     }
 
-    public override IEnumerator Stan()
+    protected override IEnumerator Stan()
     {
         if (_attacking != null)
         {
@@ -91,7 +101,7 @@ public class PlayerCombat : Attackable
         yield return base.Stan();
     }
 
-    public override IEnumerator Die()
+    protected override IEnumerator Die()
     {
         _player.Anim.SetTrigger(PlayerAnimatorData.Params.Die);
 
@@ -102,17 +112,6 @@ public class PlayerCombat : Attackable
         }
 
         yield return base.Die();
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.TryGetComponent(out EnemyInfo enemy) && IsDead == false && enemy.Combat.IsDead == false)
-        {
-            float force = 350f;
-
-            TakeDamageForce(force * (collision.GetContact(0).point - (Vector2)collision.transform.position));
-            TakeDamage(enemy.Stats.TickDamage);
-        }
     }
 
     private IEnumerator StayInvincible()

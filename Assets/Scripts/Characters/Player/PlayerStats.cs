@@ -4,9 +4,14 @@ public class PlayerStats : CharacterStats
 {
     [SerializeField] private float _lightAttackDamage;
     [SerializeField] private float _heavyAttackDamage;
-
     private float _lightAttackDuration = 0.429f;
     private float _heavyAttackDuration = 0.571f;
+
+    public enum AttackType
+    {
+        Light,
+        Heavy
+    }
 
     public float GetAttackDamage(AttackType type)
     {
@@ -22,11 +27,5 @@ public class PlayerStats : CharacterStats
             return _lightAttackDuration;
         else
             return _heavyAttackDuration;
-    }
-
-    public enum AttackType
-    {
-        Light,
-        Heavy
     }
 }

@@ -9,7 +9,6 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private PlayerInfo _player;
     [SerializeField] private CircleCollider2D _fieldOfView;
     [SerializeField] private Checkpoint[] _checkpoints;
-
     private EnemyInfo _enemy;
     private bool _isGrounded;
     private int _currentCheckpointIndex = 0;
@@ -25,6 +24,18 @@ public class EnemyMovement : MonoBehaviour
     {
         if ((_enemy.Combat.IsDead || _enemy.Combat.IsStaned) == false)
             Move();
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            _isGrounded = true;
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            _isGrounded = false;
     }
 
     private void Move()
@@ -63,18 +74,6 @@ public class EnemyMovement : MonoBehaviour
         _enemy.Anim.SetInteger(EnemyAnimatorData.Params.AnimState, _target == (Vector2)transform.position ? IdleState : WalkingState);
 
         transform.position = Vector2.MoveTowards(transform.position, _target, _enemy.Stats.Speed * Time.fixedDeltaTime);
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
-            _isGrounded = true;
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
-            _isGrounded = false;
     }
 
     private void Jump()

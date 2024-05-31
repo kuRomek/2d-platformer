@@ -3,7 +3,6 @@ using UnityEngine;
 public class ItemPicker : MonoBehaviour
 {
     [SerializeField] private AudioSource _audioSource;
-
     private CharacterInfo _character;
 
     private void Start()

@@ -4,7 +4,6 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private AudioClip[] _landingSounds;
-
     private PlayerInfo _player;
 
     private void Start()
@@ -18,6 +17,12 @@ public class PlayerMovement : MonoBehaviour
 
         if (_player.Input.ReadyToJump)
             Jump();
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") && IsGrounded())
+            _player.Audio.PlayOneShot(_landingSounds[Random.Range(0, _landingSounds.Length)]);
     }
 
     private void Move()
@@ -63,11 +68,5 @@ public class PlayerMovement : MonoBehaviour
 
         return Physics2D.Raycast(leftRayPoint, Vector2.down, rayLength, LayerMask.GetMask("Ground")) ||
                Physics2D.Raycast(rightRayPoint, Vector2.down, rayLength, LayerMask.GetMask("Ground"));
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") && IsGrounded())
-            _player.Audio.PlayOneShot(_landingSounds[Random.Range(0, _landingSounds.Length)]);
     }
 }

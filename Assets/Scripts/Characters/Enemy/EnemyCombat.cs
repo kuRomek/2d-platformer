@@ -7,7 +7,6 @@ public class EnemyCombat : Attackable
 {
     [SerializeField] private AudioClip[] _swingSounds;
     [SerializeField] private CircleCollider2D _attackField;
-
     private EnemyInfo _enemy;
     private bool _isAttacking = false;
     private List<Collider2D> _attackedPlayers = new List<Collider2D>();
@@ -32,6 +31,18 @@ public class EnemyCombat : Attackable
             if (_attackedPlayers.Count > 0 && _attackedPlayers[0].TryGetComponent(out Attackable player) && player.IsDead == false)
                 _attacking = StartCoroutine(Attack());
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.TryGetComponent(out PlayerInfo _))
+            IsSeeingPlayer = true;
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.TryGetComponent(out PlayerInfo _))
+            IsSeeingPlayer = false;
     }
 
     private IEnumerator Attack()
@@ -62,7 +73,7 @@ public class EnemyCombat : Attackable
         base.TakeDamage(damage);
     }
 
-    public override IEnumerator Die()
+    protected override IEnumerator Die()
     {
         _enemy.Anim.SetTrigger(EnemyAnimatorData.Params.Die);
 
@@ -75,7 +86,7 @@ public class EnemyCombat : Attackable
         yield return base.Die();
     }
 
-    public override IEnumerator Stan()
+    protected override IEnumerator Stan()
     {
         if (_attacking != null)
         {
@@ -84,17 +95,5 @@ public class EnemyCombat : Attackable
         }
 
         return base.Stan();
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.TryGetComponent(out PlayerInfo _))
-            IsSeeingPlayer = true;
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.gameObject.TryGetComponent(out PlayerInfo _))
-            IsSeeingPlayer = false;
     }
 }
