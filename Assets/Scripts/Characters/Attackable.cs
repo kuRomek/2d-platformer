@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterInfo))]
-public class Attackable : MonoBehaviour
+public class Attackable<StatsType> : MonoBehaviour where StatsType : CharacterStats
 {
     [SerializeField] private AudioClip[] _hitSounds;
     private bool _isDead = false;
@@ -12,19 +12,19 @@ public class Attackable : MonoBehaviour
 
     public bool IsStaned => _isStaned;
     public bool IsDead => _isDead;
-    protected CharacterInfo Character { get; private set; }
+    protected CharacterInfo<StatsType> Character { get; private set; }
 
     private void Awake()
     {
-        Character = GetComponent<CharacterInfo>();
+        Character = GetComponent<CharacterInfo<StatsType>>();
     }
 
     public virtual void TakeDamage(float damage)
     {
-        Character.BaseStats.SubtractHP(damage);
+        Character.Stats.SubtractHP(damage);
         Character.Audio.PlayOneShot(_hitSounds[Random.Range(0, _hitSounds.Length)]);
 
-        if (Character.BaseStats.HealthPoints <= 0)
+        if (Character.Stats.HealthPoints <= 0)
             StartCoroutine(Die());
         else
             StartCoroutine(Stan());

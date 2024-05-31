@@ -13,8 +13,8 @@ public class PlayerInput : MonoBehaviour
 
     public float Direction { get; private set; }
     public bool ReadyToJump { get; private set; }
-    public bool ReadyForLightAttack { get; private set; }
-    public bool ReadyForHeavyAttack { get; private set; }
+    public bool ReadyForAttack1 { get; private set; }
+    public bool ReadyForAttack2 { get; private set; }
 
     private void Start()
     {
@@ -31,10 +31,10 @@ public class PlayerInput : MonoBehaviour
                 ReadyToJump = true;
 
             if (Input.GetButtonDown(Fire1) && _player.Combat.IsAttacking == false)
-                ReadyForLightAttack = true;
+                ReadyForAttack1 = true;
 
             if (Input.GetButtonDown(Fire2) && _player.Combat.IsAttacking == false)
-                ReadyForHeavyAttack = true;
+                ReadyForAttack2 = true;
         }
         else
         {
@@ -56,11 +56,11 @@ public class PlayerInput : MonoBehaviour
 
     public void ResetLightAttack()
     {
-        ReadyForLightAttack = false;
+        ReadyForAttack1 = false;
     }
 
     public void ResetHeavyAttack()
     {
-        ReadyForHeavyAttack = false;
+        ReadyForAttack2 = false;
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCombat : Attackable
+public class PlayerCombat : Attackable<PlayerStats>
 {
     [SerializeField] private AudioClip[] _swingSounds;
     [SerializeField] private CircleCollider2D _attackField;
@@ -23,15 +23,15 @@ public class PlayerCombat : Attackable
 
     private void FixedUpdate()
     {
-        if (_player.Input.ReadyForLightAttack)
+        if (_player.Input.ReadyForAttack1)
         { 
-            _attacking = StartCoroutine(Attack(PlayerStats.AttackType.Light));
+            _attacking = StartCoroutine(Attack(_player.Stats.Attack1));
             _player.Input.ResetLightAttack();
         }
 
-        if (_player.Input.ReadyForHeavyAttack)
+        if (_player.Input.ReadyForAttack2)
         {
-            _attacking = StartCoroutine(Attack(PlayerStats.AttackType.Heavy));
+            _attacking = StartCoroutine(Attack(_player.Stats.Attack2));
             _player.Input.ResetHeavyAttack();
         }
     }
@@ -47,27 +47,27 @@ public class PlayerCombat : Attackable
         }
     }
 
-    private IEnumerator Attack(PlayerStats.AttackType type)
+    private IEnumerator Attack(PlayerAttack attack)
     {
         IsAttacking = true;
 
-        _player.Anim.SetTrigger(type == PlayerStats.AttackType.Light ? PlayerAnimatorData.Params.LightAttack : PlayerAnimatorData.Params.HeavyAttack);
+        _player.Anim.SetTrigger(attack.Type == PlayerAttack.Tier.Light ? PlayerAnimatorData.Params.LightAttack : PlayerAnimatorData.Params.HeavyAttack);
         _player.Audio.PlayOneShot(_swingSounds[Random.Range(0, _swingSounds.Length)]);
 
-        yield return new WaitForSeconds(_player.Stats.GetAttackDuration(type) * 0.33f);
+        yield return new WaitForSeconds(attack.Duration * 0.33f);
 
         _attackField.OverlapCollider(_enemyFilter, _attackedEnemies);
 
         foreach (Collider2D enemyCollider in _attackedEnemies)
         {
-            if (enemyCollider.TryGetComponent(out Attackable enemy))
+            if (enemyCollider.TryGetComponent(out Attackable<EnemyStats> enemy))
             {
-                enemy.TakeDamage(_player.Stats.GetAttackDamage(type));
+                enemy.TakeDamage(attack.Damage);
                 enemy.TakeDamageForce(100f * (Vector2)(enemyCollider.bounds.center - transform.position));
             }
         }
 
-        yield return new WaitForSeconds(_player.Stats.GetAttackDuration(type) * 0.67f);
+        yield return new WaitForSeconds(attack.Duration * 0.67f);
 
         IsAttacking = false;
     }

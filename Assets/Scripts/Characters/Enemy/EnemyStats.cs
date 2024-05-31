@@ -7,6 +7,6 @@ public class EnemyStats : CharacterStats
 
     public float AttackDamage => _attackDamage;
     public float TickDamage => _tickDamage;
-    public float AttackDuration { get; private set; } = 0.8f;
-    public float AttackCooldown { get; private set; } = 2f;
+    public float AttackDuration { get; } = 0.8f;
+    public float AttackCooldown { get; } = 2f;
 }

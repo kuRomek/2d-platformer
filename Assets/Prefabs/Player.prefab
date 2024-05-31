@@ -41,7 +41,7 @@ Transform:
   m_Children:
   - {fileID: 4051882193679779858}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3663288355905859596
 SpriteRenderer:
@@ -316,8 +316,14 @@ MonoBehaviour:
   _maxHealthPoints: 100
   _speed: 6.8
   _jumpForce: 15
-  _lightAttackDamage: 15
-  _heavyAttackDamage: 20
+  _attack1:
+    _type: 0
+    _damage: 15
+    _duration: 0.5
+  attack2:
+    _type: 1
+    _damage: 20
+    _duration: 0.7
 --- !u!114 &3812747384965401228
 MonoBehaviour:
   m_ObjectHideFlags: 0

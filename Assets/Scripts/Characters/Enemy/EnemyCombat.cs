@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(EnemyInfo))]
-public class EnemyCombat : Attackable
+public class EnemyCombat : Attackable<EnemyStats>
 {
     [SerializeField] private AudioClip[] _swingSounds;
     [SerializeField] private CircleCollider2D _attackField;
@@ -28,7 +28,7 @@ public class EnemyCombat : Attackable
         {
             _attackField.OverlapCollider(_playerFilter, _attackedPlayers);
 
-            if (_attackedPlayers.Count > 0 && _attackedPlayers[0].TryGetComponent(out Attackable player) && player.IsDead == false)
+            if (_attackedPlayers.Count > 0 && _attackedPlayers[0].TryGetComponent(out Attackable<PlayerStats> player) && player.IsDead == false)
                 _attacking = StartCoroutine(Attack());
         }
     }
@@ -56,7 +56,7 @@ public class EnemyCombat : Attackable
 
         _attackField.OverlapCollider(_playerFilter, _attackedPlayers);
 
-        if (_attackedPlayers.Count > 0 && _attackedPlayers[0].TryGetComponent(out Attackable player))
+        if (_attackedPlayers.Count > 0 && _attackedPlayers[0].TryGetComponent(out Attackable<PlayerStats> player))
         {
             player.TakeDamage(_enemy.Stats.AttackDamage);
             player.TakeDamageForce(100f * (Vector2)(_attackedPlayers[0].bounds.center - transform.position));

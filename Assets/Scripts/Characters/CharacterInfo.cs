@@ -1,11 +1,11 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D), typeof(Rigidbody2D), typeof(AudioSource))]
-public class CharacterInfo : MonoBehaviour
+public class CharacterInfo<StatsType> : MonoBehaviour where StatsType : CharacterStats
 {
-    [SerializeField] private CharacterStats _stats;
+    [SerializeField] private StatsType _stats;
 
-    public CharacterStats BaseStats => _stats;
+    public StatsType Stats => _stats;
     public Collider2D Collider { get; private set; }
     public Rigidbody2D Rigidbody { get; private set; }
     public AudioSource Audio { get; private set; }

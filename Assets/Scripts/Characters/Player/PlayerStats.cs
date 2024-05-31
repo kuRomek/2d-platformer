@@ -1,31 +1,29 @@
+using System;
 using UnityEngine;
 
 public class PlayerStats : CharacterStats
 {
-    [SerializeField] private float _lightAttackDamage;
-    [SerializeField] private float _heavyAttackDamage;
-    private float _lightAttackDuration = 0.429f;
-    private float _heavyAttackDuration = 0.571f;
+    [SerializeField] private PlayerAttack _attack1;
+    [SerializeField] private PlayerAttack attack2;
 
-    public enum AttackType
+    public PlayerAttack Attack1 => _attack1;
+    public PlayerAttack Attack2 => attack2;
+}
+
+[Serializable]
+public struct PlayerAttack
+{
+    public Tier _type;
+    public float _damage;
+    public float _duration;
+
+    public enum Tier
     {
         Light,
-        Heavy
+        Heavy,
     }
 
-    public float GetAttackDamage(AttackType type)
-    {
-        if (type == AttackType.Light)
-            return _lightAttackDamage;
-        else
-            return _heavyAttackDamage;
-    }
-
-    public float GetAttackDuration(AttackType type)
-    {
-        if (type == AttackType.Light)
-            return _lightAttackDuration;
-        else
-            return _heavyAttackDuration;
-    }
+    public readonly Tier Type => _type;
+    public readonly float Damage => _damage;
+    public readonly float Duration => _duration;
 }

@@ -1,13 +1,14 @@
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterStats))]
 public class ItemPicker : MonoBehaviour
 {
     [SerializeField] private AudioSource _audioSource;
-    private CharacterInfo _character;
+    private CharacterStats _stats;
 
     private void Start()
     {
-        _character = GetComponent<CharacterInfo>();
+        _stats = GetComponent<CharacterStats>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -21,7 +22,7 @@ public class ItemPicker : MonoBehaviour
         _audioSource.PlayOneShot(item.PickUpSound);
 
         if (item is Medicine medicine)
-            _character.BaseStats.AddHP(medicine.HealPoints);
+            _stats.AddHP(medicine.HealPoints);
 
         Destroy(item.gameObject);
     }

@@ -20,12 +20,12 @@ public class CharacterStats : MonoBehaviour
     public void AddHP(float hpToAdd)
     {
         _healthPoints = Mathf.Clamp(_healthPoints + hpToAdd, 0f, _maxHealthPoints);
-        Debug.Log($"{_healthPoints} (+{hpToAdd})");
+        Debug.Log($"{gameObject.name}: {_healthPoints} (+{hpToAdd})");
     }
 
     public void SubtractHP(float hpToSubtract)
     {
         _healthPoints = Mathf.Clamp(_healthPoints - hpToSubtract, 0f, _maxHealthPoints);
-        Debug.Log($"{_healthPoints} (-{hpToSubtract})");
+        Debug.Log($"{gameObject.name}: {_healthPoints} (-{hpToSubtract})");
     }
 }

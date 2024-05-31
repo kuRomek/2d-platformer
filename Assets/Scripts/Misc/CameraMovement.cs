@@ -17,6 +17,8 @@ public class CameraMovement : MonoBehaviour
         _camera = GetComponent<Camera>();
         _startXValue = _levelCollider.bounds.min.x + _colliderOffset + _camera.aspect * _camera.orthographicSize;
         _finalXValue = _levelCollider.bounds.max.x - _colliderOffset - _camera.aspect * _camera.orthographicSize;
+
+        transform.position = new Vector3(_startXValue, 0f, transform.position.z);
     }
 
     private void FixedUpdate()
