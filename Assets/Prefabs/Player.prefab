@@ -320,7 +320,7 @@ MonoBehaviour:
     _type: 0
     _damage: 15
     _duration: 0.5
-  attack2:
+  _attack2:
     _type: 1
     _damage: 20
     _duration: 0.7

@@ -47,11 +47,11 @@ public class PlayerCombat : Attackable<PlayerStats>
         }
     }
 
-    private IEnumerator Attack(PlayerAttack attack)
+    private IEnumerator Attack(PlayerStats.Attack attack)
     {
         IsAttacking = true;
 
-        _player.Anim.SetTrigger(attack.Type == PlayerAttack.Tier.Light ? PlayerAnimatorData.Params.LightAttack : PlayerAnimatorData.Params.HeavyAttack);
+        _player.Anim.SetTrigger(attack.Type == PlayerStats.Attack.Tier.Light ? PlayerAnimatorData.Params.LightAttack : PlayerAnimatorData.Params.HeavyAttack);
         _player.Audio.PlayOneShot(_swingSounds[Random.Range(0, _swingSounds.Length)]);
 
         yield return new WaitForSeconds(attack.Duration * 0.33f);
