@@ -1,9 +1,11 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerInfo))]
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private AudioClip[] _landingSounds;
+
     private PlayerInfo _player;
 
     private void Start()
@@ -22,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") && IsGrounded())
-            _player.Audio.PlayOneShot(_landingSounds[Random.Range(0, _landingSounds.Length)]);
+            _player.Audio.PlayOneShot(_landingSounds[UnityEngine.Random.Range(0, _landingSounds.Length)]);
     }
 
     private void Move()
@@ -31,7 +33,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (_player.Input.Direction != 0f)
         {
-            transform.localScale = new Vector2(Mathf.Sign(_player.Input.Direction), _player.transform.localScale.y);
+            _player.Sprite.flipX = Mathf.Sign(_player.Input.Direction) < 0;
+            _player.Combat.AttackField.transform.localScale = new Vector2(MathF.Pow(-1f, Convert.ToInt32(_player.Sprite.flipX)), 1f);
             _player.Anim.speed = Mathf.Abs(_player.Input.Direction);
         }
         else

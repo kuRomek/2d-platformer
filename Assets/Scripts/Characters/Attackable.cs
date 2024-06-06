@@ -5,6 +5,7 @@ using UnityEngine;
 public class Attackable<StatsType> : MonoBehaviour where StatsType : CharacterStats
 {
     [SerializeField] private AudioClip[] _hitSounds;
+
     private bool _isDead = false;
     private float _dyingSeconds = 1f;
     private bool _isStaned = false;
@@ -21,10 +22,10 @@ public class Attackable<StatsType> : MonoBehaviour where StatsType : CharacterSt
 
     public virtual void TakeDamage(float damage)
     {
-        Character.Stats.SubtractHP(damage);
+        Character.Stats.HealthPoints.TakeDamage(damage);
         Character.Audio.PlayOneShot(_hitSounds[Random.Range(0, _hitSounds.Length)]);
 
-        if (Character.Stats.HealthPoints <= 0)
+        if (Character.Stats.HealthPoints.Amount <= 0)
             StartCoroutine(Die());
         else
             StartCoroutine(Stan());

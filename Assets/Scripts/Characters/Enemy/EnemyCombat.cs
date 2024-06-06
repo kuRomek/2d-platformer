@@ -7,6 +7,7 @@ public class EnemyCombat : Attackable<EnemyStats>
 {
     [SerializeField] private AudioClip[] _swingSounds;
     [SerializeField] private CircleCollider2D _attackField;
+
     private EnemyInfo _enemy;
     private bool _isAttacking = false;
     private List<Collider2D> _attackedPlayers = new List<Collider2D>();

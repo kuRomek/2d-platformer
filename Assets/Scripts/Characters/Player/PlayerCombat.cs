@@ -6,6 +6,7 @@ public class PlayerCombat : Attackable<PlayerStats>
 {
     [SerializeField] private AudioClip[] _swingSounds;
     [SerializeField] private CircleCollider2D _attackField;
+
     private PlayerInfo _player;
     private List<Collider2D> _attackedEnemies = new List<Collider2D>();
     private ContactFilter2D _enemyFilter = new ContactFilter2D();
@@ -14,6 +15,7 @@ public class PlayerCombat : Attackable<PlayerStats>
     private Coroutine _attacking;
 
     public bool IsAttacking { get; private set; } = false;
+    public CircleCollider2D AttackField => _attackField;
 
     private void Start()
     {

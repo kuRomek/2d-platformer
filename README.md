@@ -1,3 +1,3 @@
-# Default 2D Platformer
+# Fight For Platformer 2: UI implementation
 
-https://youtu.be/BZm4GtGp_xs
+https://youtu.be/jaTQP1kbdh8

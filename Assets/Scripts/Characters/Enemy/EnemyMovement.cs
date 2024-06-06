@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(EnemyInfo))]
@@ -9,6 +10,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private PlayerInfo _player;
     [SerializeField] private CircleCollider2D _fieldOfView;
     [SerializeField] private Checkpoint[] _checkpoints;
+
     private EnemyInfo _enemy;
     private bool _isGrounded;
     private int _currentCheckpointIndex = 0;
@@ -49,7 +51,8 @@ public class EnemyMovement : MonoBehaviour
             else
                 _target = nearbyPlayer;
 
-            transform.localScale = new Vector3(Mathf.Sign(transform.position.x - _player.transform.position.x), 1f, 1f);
+            _enemy.Sprite.flipX = Mathf.Sign(transform.position.x - _player.transform.position.x) < 0;
+            _enemy.Combat.AttackField.transform.localScale = new Vector2(MathF.Pow(-1f, Convert.ToInt32(_enemy.Sprite.flipX)), 1f);
 
             if (_enemy.Combat.AttackField.IsTouchingLayers(LayerMask.GetMask("Ground")) && _isGrounded)
                 Jump();
@@ -65,7 +68,8 @@ public class EnemyMovement : MonoBehaviour
 
             _target = new Vector2(_checkpoints[_currentCheckpointIndex].transform.position.x, transform.position.y);
 
-            transform.localScale = new Vector3(Mathf.Sign(transform.position.x - _target.x), 1f, 1f);
+            _enemy.Sprite.flipX = Mathf.Sign(transform.position.x - _target.x) < 0;
+            _enemy.Combat.AttackField.transform.localScale = new Vector2(MathF.Pow(-1f, Convert.ToInt32(_enemy.Sprite.flipX)), 1f);
 
             if (_enemy.Combat.AttackField.IsTouchingLayers(LayerMask.GetMask("Ground")) && _isGrounded)
                 Jump();
