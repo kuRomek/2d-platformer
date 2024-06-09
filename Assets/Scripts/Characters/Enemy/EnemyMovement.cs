@@ -1,11 +1,10 @@
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(EnemyInfo))]
 public class EnemyMovement : MonoBehaviour
 {
-    private const int WalkingState = 2;
-    private const int IdleState = 1;
+    public const int IdleAnimationState = 1;
+    public const int WalkingAnimationState = 2;
 
     [SerializeField] private PlayerInfo _player;
     [SerializeField] private CircleCollider2D _fieldOfView;
@@ -51,8 +50,7 @@ public class EnemyMovement : MonoBehaviour
             else
                 _target = nearbyPlayer;
 
-            _enemy.Sprite.flipX = Mathf.Sign(transform.position.x - _player.transform.position.x) < 0;
-            _enemy.Combat.AttackField.transform.localScale = new Vector2(MathF.Pow(-1f, Convert.ToInt32(_enemy.Sprite.flipX)), 1f);
+            _enemy.Sprite.transform.localScale = new Vector2(Mathf.Sign(transform.position.x - _player.transform.position.x), 1f);
 
             if (_enemy.Combat.AttackField.IsTouchingLayers(LayerMask.GetMask("Ground")) && _isGrounded)
                 Jump();
@@ -68,14 +66,13 @@ public class EnemyMovement : MonoBehaviour
 
             _target = new Vector2(_checkpoints[_currentCheckpointIndex].transform.position.x, transform.position.y);
 
-            _enemy.Sprite.flipX = Mathf.Sign(transform.position.x - _target.x) < 0;
-            _enemy.Combat.AttackField.transform.localScale = new Vector2(MathF.Pow(-1f, Convert.ToInt32(_enemy.Sprite.flipX)), 1f);
+            _enemy.Sprite.transform.localScale = new Vector2(Mathf.Sign(transform.position.x - _target.x), 1f);
 
             if (_enemy.Combat.AttackField.IsTouchingLayers(LayerMask.GetMask("Ground")) && _isGrounded)
                 Jump();
         }
 
-        _enemy.Anim.SetInteger(EnemyAnimatorData.Params.AnimState, _target == (Vector2)transform.position ? IdleState : WalkingState);
+        _enemy.Anim.SetInteger(EnemyAnimatorData.Params.AnimState, _target == (Vector2)transform.position ? IdleAnimationState : WalkingAnimationState);
 
         transform.position = Vector2.MoveTowards(transform.position, _target, _enemy.Stats.Speed * Time.fixedDeltaTime);
     }

@@ -5,13 +5,15 @@ public class PlayerStats : CharacterStats
 {
     [SerializeField] private Attack _attack1;
     [SerializeField] private Attack _attack2;
+    [SerializeField] private Vampirism _vampirism;
     [SerializeField] private int _coinCount;
     [SerializeField] private int _gemCount;
 
-    public int CoinCount => _coinCount;
-    public int GemCount => _gemCount;
     public Attack Attack1 => _attack1;
     public Attack Attack2 => _attack2;
+    public Vampirism Vampirism => _vampirism;
+    public int CoinCount => _coinCount;
+    public int GemCount => _gemCount;
 
     public event Action OnItemsCountUpdate;
 

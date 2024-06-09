@@ -4,14 +4,14 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterInfo))]
 public class Attackable<StatsType> : MonoBehaviour where StatsType : CharacterStats
 {
+
     [SerializeField] private AudioClip[] _hitSounds;
 
     private bool _isDead = false;
+    private float _defaultStanedSeconds = 0.4f;
     private float _dyingSeconds = 1f;
-    private bool _isStaned = false;
-    private float _stanedSeconds = 0.4f;
 
-    public bool IsStaned => _isStaned;
+    public bool IsStaned { get; set; }
     public bool IsDead => _isDead;
     protected CharacterInfo<StatsType> Character { get; private set; }
 
@@ -20,22 +20,32 @@ public class Attackable<StatsType> : MonoBehaviour where StatsType : CharacterSt
         Character = GetComponent<CharacterInfo<StatsType>>();
     }
 
+    private void OnEnable()
+    {
+        Character.Stats.HealthPoints.OnValueChange += BeginDying;
+    }
+
+    private void OnDisable()
+    {
+        Character.Stats.HealthPoints.OnValueChange -= BeginDying;
+    }
+
     public virtual void TakeDamage(float damage)
     {
         Character.Stats.HealthPoints.TakeDamage(damage);
         Character.Audio.PlayOneShot(_hitSounds[Random.Range(0, _hitSounds.Length)]);
-
-        if (Character.Stats.HealthPoints.Amount <= 0)
-            StartCoroutine(Die());
-        else
-            StartCoroutine(Stan());
-
     }
 
     public virtual void TakeDamageForce(Vector2 force)
     {
         Character.Rigidbody.velocity = Vector2.zero;
         Character.Rigidbody.AddForce(force);
+    }
+
+    public void BeginDying()
+    {
+        if (Character.Stats.HealthPoints.Amount == 0f)
+            StartCoroutine(Die());
     }
 
     protected virtual IEnumerator Die()
@@ -49,10 +59,22 @@ public class Attackable<StatsType> : MonoBehaviour where StatsType : CharacterSt
         Character.Rigidbody.isKinematic = true;
     }
 
-    protected virtual IEnumerator Stan()
+    public IEnumerator StanForFixedTime()
     {
-        _isStaned = true;
-        yield return new WaitForSeconds(_stanedSeconds);
-        _isStaned = false;
+        Stan();
+
+        yield return new WaitForSeconds(_defaultStanedSeconds);
+        
+        Unstan();
+    }
+
+    public virtual void Stan()
+    {
+        IsStaned = true;
+    }
+
+    public void Unstan()
+    {
+        IsStaned = false;
     }
 }

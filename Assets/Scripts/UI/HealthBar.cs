@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class HealthBar : HealthView
 {
     private Slider _bar;
-    private float _smoothBarUpdateSpeed = 0.085f;
+    private float _smoothBarUpdateSpeed = 0.025f;
     private Coroutine _updatingBar;
 
     private void Start()
@@ -28,6 +28,9 @@ public class HealthBar : HealthView
 
     private IEnumerator UpdateBar()
     {
+        if (HealthPoints.Amount == 0f)
+            gameObject.SetActive(false);
+
         while (Mathf.Approximately(_bar.value, HealthPoints.Amount) == false)
         {
             _bar.value = Mathf.Lerp(_bar.value, HealthPoints.Amount, _smoothBarUpdateSpeed);
@@ -36,8 +39,5 @@ public class HealthBar : HealthView
         }
 
         _bar.value = HealthPoints.Amount;
-
-        if (_bar.value == _bar.minValue)
-            gameObject.SetActive(false);
     }
 }

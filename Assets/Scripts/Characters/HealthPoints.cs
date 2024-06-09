@@ -19,13 +19,27 @@ public class HealthPoints : MonoBehaviour
 
     public void TakeDamage(float value)
     {
-        _amount = Mathf.Clamp(_amount - value, 0f, _max);
-        OnValueChange?.Invoke();
+        if (value >= 0f)
+        {
+            _amount = Mathf.Clamp(_amount - value, 0f, _max);
+            OnValueChange?.Invoke();
+        }
+        else
+        {
+            throw new ArgumentException("Argument cannot be less then 0");
+        }
     }
 
     public void Heal(float value)
     {
-        _amount = Mathf.Clamp(_amount + value, 0f, _max);
-        OnValueChange?.Invoke();
+        if (value >= 0f)
+        {
+            _amount = Mathf.Clamp(_amount + value, 0f, _max);
+            OnValueChange?.Invoke();
+        }
+        else
+        {
+            throw new ArgumentException("Argument cannot be less then 0");
+        }
     }
 }

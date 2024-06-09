@@ -28,13 +28,19 @@ public class PlayerCombat : Attackable<PlayerStats>
         if (_player.Input.ReadyForAttack1)
         { 
             _attacking = StartCoroutine(Attack(_player.Stats.Attack1));
-            _player.Input.ResetLightAttack();
+            _player.Input.ResetAttack1();
         }
 
         if (_player.Input.ReadyForAttack2)
         {
             _attacking = StartCoroutine(Attack(_player.Stats.Attack2));
-            _player.Input.ResetHeavyAttack();
+            _player.Input.ResetAttack2();
+        }
+
+        if (_player.Input.ReadyForVampirism)
+        {
+            _player.Stats.Vampirism.Use();
+            _player.Input.ResetVampirism();
         }
     }
 
@@ -46,6 +52,7 @@ public class PlayerCombat : Attackable<PlayerStats>
 
             TakeDamageForce(force * (collision.GetContact(0).point - (Vector2)collision.transform.position));
             TakeDamage(enemy.Stats.TickDamage);
+            StartCoroutine(StanForFixedTime());
         }
     }
 
@@ -66,6 +73,7 @@ public class PlayerCombat : Attackable<PlayerStats>
             {
                 enemy.TakeDamage(attack.Damage);
                 enemy.TakeDamageForce(100f * (Vector2)(enemyCollider.bounds.center - transform.position));
+                StartCoroutine(enemy.StanForFixedTime());
             }
         }
 
@@ -92,7 +100,14 @@ public class PlayerCombat : Attackable<PlayerStats>
             base.TakeDamageForce(force);
     }
 
-    protected override IEnumerator Stan()
+    private IEnumerator StayInvincible()
+    {
+        _isInvincible = true;
+        yield return new WaitForSeconds(_invincibleSeconds);
+        _isInvincible = false;
+    }
+
+    public override void Stan()
     {
         if (_attacking != null)
         {
@@ -100,7 +115,9 @@ public class PlayerCombat : Attackable<PlayerStats>
             IsAttacking = false;
         }
 
-        yield return base.Stan();
+        _player.Anim.SetInteger(PlayerAnimatorData.Params.AnimState, PlayerMovement.IdleAnimationState);
+
+        base.Stan();
     }
 
     protected override IEnumerator Die()
@@ -114,12 +131,5 @@ public class PlayerCombat : Attackable<PlayerStats>
         }
 
         yield return base.Die();
-    }
-
-    private IEnumerator StayInvincible()
-    {
-        _isInvincible = true;
-        yield return new WaitForSeconds(_invincibleSeconds);
-        _isInvincible = false;
     }
 }

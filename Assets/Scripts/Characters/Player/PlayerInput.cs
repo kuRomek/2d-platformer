@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +9,7 @@ public class PlayerInput : MonoBehaviour
     private const string Jump = nameof(Jump);
     private const string Fire1 = nameof(Fire1);
     private const string Fire2 = nameof(Fire2);
+    private const string Skill = nameof(Skill);
 
     private PlayerInfo _player;
 
@@ -15,6 +17,7 @@ public class PlayerInput : MonoBehaviour
     public bool ReadyToJump { get; private set; }
     public bool ReadyForAttack1 { get; private set; }
     public bool ReadyForAttack2 { get; private set; }
+    public bool ReadyForVampirism { get; private set; }
 
     private void Start()
     {
@@ -35,6 +38,9 @@ public class PlayerInput : MonoBehaviour
 
             if (Input.GetButtonDown(Fire2) && _player.Combat.IsAttacking == false)
                 ReadyForAttack2 = true;
+
+            if (Input.GetButtonDown(Skill) && _player.Stats.Vampirism.IsReady == true)
+                ReadyForVampirism = true;
         }
         else
         {
@@ -54,13 +60,18 @@ public class PlayerInput : MonoBehaviour
         ReadyToJump = false;
     }
 
-    public void ResetLightAttack()
+    public void ResetAttack1()
     {
         ReadyForAttack1 = false;
     }
 
-    public void ResetHeavyAttack()
+    public void ResetAttack2()
     {
         ReadyForAttack2 = false;
+    }
+
+    public void ResetVampirism()
+    {
+        ReadyForVampirism = false;
     }
 }

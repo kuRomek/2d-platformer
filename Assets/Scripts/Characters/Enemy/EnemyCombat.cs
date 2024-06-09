@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 [RequireComponent(typeof(EnemyInfo))]
 public class EnemyCombat : Attackable<EnemyStats>
@@ -61,6 +62,7 @@ public class EnemyCombat : Attackable<EnemyStats>
         {
             player.TakeDamage(_enemy.Stats.AttackDamage);
             player.TakeDamageForce(100f * (Vector2)(_attackedPlayers[0].bounds.center - transform.position));
+            StartCoroutine(player.StanForFixedTime());
         }
 
         yield return new WaitForSeconds(_enemy.Stats.AttackDuration / 2f + _enemy.Stats.AttackCooldown);
@@ -87,7 +89,7 @@ public class EnemyCombat : Attackable<EnemyStats>
         yield return base.Die();
     }
 
-    protected override IEnumerator Stan()
+    public override void Stan()
     {
         if (_attacking != null)
         {
@@ -95,6 +97,8 @@ public class EnemyCombat : Attackable<EnemyStats>
             _isAttacking = false;
         }
 
-        return base.Stan();
+        _enemy.Anim.SetInteger(EnemyAnimatorData.Params.AnimState, EnemyMovement.IdleAnimationState);
+
+        base.Stan();
     }
 }
